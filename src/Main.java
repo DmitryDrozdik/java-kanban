@@ -1,48 +1,51 @@
+import managers.Manager;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+import tasks.enums.Status;
 
 public class Main {
     public static void main(String[] args) {
         Manager manager = new Manager();
 
-        Task task1 = new Task("Task1", "Description1");
-        Task task2 = new Task("Task2", "Description2");
-
-        Epic epic1 = new Epic("Epic1", "Epic description1");
-        Subtask subtask1 = new Subtask("Subtask1", "Description subtask1", epic1);
-        Subtask subtask2 = new Subtask("Subtask2", "Description subtask2", epic1);
-        epic1.addSubtask(subtask1);
-        epic1.addSubtask(subtask2);
-
-        Epic epic2 = new Epic("Epic2", "Epic description2");
-        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", epic2);
-        epic2.addSubtask(subtask3);
-
+        // Create Tasks
+        Task task1 = new Task("Task1", "This is task 1");
+        Task task2 = new Task("Task2", "This is task 2");
         manager.createTask(task1);
         manager.createTask(task2);
-        manager.createTask(epic1);
-        manager.createTask(epic2);
-        manager.createTask(subtask1);
-        manager.createTask(subtask2);
-        manager.createTask(subtask3);
 
-        System.out.println("Default values:");
-        System.out.println("All tasks: " + manager.getAllTasks());
-        System.out.println("Subtasks for Epic 1: " + manager.getEpicTasks(epic1));
-        System.out.println("Subtasks for Epic 2: " + manager.getEpicTasks(epic2));
+        // Create Epic and Subtasks
+        Epic epic = new Epic("Epic1", "This is epic 1");
+        Subtask subtask1 = new Subtask("Subtask1", "This is subtask 1", epic.getID());
+        Subtask subtask2 = new Subtask("Subtask2", "This is subtask 2", epic.getID());
+        manager.createEpic(epic);
+        manager.createSubtask(subtask1);
+        manager.createSubtask(subtask2);
 
-        task1.setStatus(Status.DONE);
-        subtask2.setStatus(Status.IN_PROGRESS);
+        // Link subtasks to the epic
+        epic.addSubtask(subtask1.getID());
+        epic.addSubtask(subtask2.getID());
+        manager.updateEpics(epic);
 
-        System.out.println("Updated values:");
-        System.out.println("All tasks: " + manager.getAllTasks());
-        System.out.println("Subtasks for Epic 1: " + manager.getEpicTasks(epic1));
-        System.out.println("Subtasks for Epic 2: " + manager.getEpicTasks(epic2));
+        // Verify initial conditions
+        System.out.println("Initial Tasks: " + manager.getAllTasks());
+        System.out.println("Initial Epics: " + manager.getAllEpics());
+        System.out.println("Initial Subtasks: " + manager.getAllSubtasks());
 
-        manager.deleteByID(task2.getID());
-        manager.deleteByID(epic1.getID());
+        // Update task
+        task1.setName("UpdatedTask1");
+        task1.setStatus(Status.IN_PROGRESS);
+        manager.updateTask(task1);
 
-        System.out.println("Deleted values:");
-        System.out.println("All tasks: " + manager.getAllTasks());
-        System.out.println("Subtasks for Epic 1: " + manager.getEpicTasks(epic1));
-        System.out.println("Subtasks for Epic 2: " + manager.getEpicTasks(epic2));
+        // Delete task by ID
+        manager.deleteTaskByID(task2.getID());
+
+        // Delete epic by ID (Should also delete subtasks)
+        manager.deleteEpicByID(epic.getID());
+
+        // Verify final conditions
+        System.out.println("Final Tasks: " + manager.getAllTasks());
+        System.out.println("Final Epics: " + manager.getAllEpics());
+        System.out.println("Final Subtasks: " + manager.getAllSubtasks());
     }
 }

@@ -1,3 +1,7 @@
+package tasks;
+
+import tasks.enums.Status;
+
 public class Task {
     private String name;
     private String description;

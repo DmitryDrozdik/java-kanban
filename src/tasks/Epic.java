@@ -1,24 +1,32 @@
+package tasks;
+
+import tasks.enums.Status;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
-    private List<Subtask> subtaskList;
+    private List<Integer> subtaskListID;
+
     public Epic(String name, String description, int ID, Status status) {
         super(name, description, ID, status);
-        this.subtaskList = new ArrayList<>();
+        this.subtaskListID = new ArrayList<>();
     }
 
     public Epic(String name, String description) {
         this(name, description, 0, Status.NEW);
     }
 
-    public List<Subtask> getSubtaskList() {
-        return subtaskList;
+    public List<Integer> getSubtaskList() {
+        return subtaskListID;
     }
 
-    public void addSubtask(Subtask subtask) {
-        this.subtaskList.add(subtask);
-        subtask.setEpic(this);
+    public void addSubtask(int subtaskID) {
+        this.subtaskListID.add(subtaskID);
+    }
+
+    public void deleteSubtask(int subtaskID) {
+        this.subtaskListID.remove(subtaskID);
     }
 
     @Override
@@ -28,11 +36,12 @@ public class Epic extends Task {
                 ", description='" + getDescription() + '\'' +
                 ", ID=" + getID() +
                 ", status=" + getStatus() +
-                ", subtasks names=[ ");
+                ", subtasks ids=[ ");
 
         for (var subtask : getSubtaskList()) {
-            ret.append(subtask.getName() + ' ');
+            ret.append(subtask).append(" ");
         }
+
         ret.append("]}");
         return ret.toString();
     }
