@@ -16,9 +16,9 @@ public class Main {
 
         // Create Epic and Subtasks
         Epic epic = new Epic("Epic1", "This is epic 1");
+        manager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask1", "This is subtask 1", epic.getID());
         Subtask subtask2 = new Subtask("Subtask2", "This is subtask 2", epic.getID());
-        manager.createEpic(epic);
         manager.createSubtask(subtask1);
         manager.createSubtask(subtask2);
 
