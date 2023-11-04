@@ -11,16 +11,20 @@ public class Main {
         // Create Tasks
         Task task1 = new Task("Task1", "This is task 1");
         Task task2 = new Task("Task2", "This is task 2");
+        Task task3 = new Task("Task3", "This is task 3");
         manager.createTask(task1);
         manager.createTask(task2);
+        manager.createTask(task3);
 
         // Create Epic and Subtasks
         Epic epic = new Epic("Epic1", "This is epic 1");
         manager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask1", "This is subtask 1", epic.getID());
         Subtask subtask2 = new Subtask("Subtask2", "This is subtask 2", epic.getID());
+        Subtask subtask3 = new Subtask("Subtask3", "This is subtask 3", epic.getID());
         manager.createSubtask(subtask1);
         manager.createSubtask(subtask2);
+        manager.createSubtask(subtask3);
 
         // Link subtasks to the epic
         epic.addSubtask(subtask1.getID());

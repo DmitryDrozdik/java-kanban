@@ -50,9 +50,9 @@ public class Manager {
         subtasks.clear();
 
         for (var epic : epics.values()) {
-            for (var subtaskID : epic.getSubtaskList())
+            for (var subtaskID : epic.getSubtaskList()) {
                 epic.deleteSubtask(subtaskID);
-
+            }
             updateStatuses(epic);
         }
     }
@@ -117,22 +117,21 @@ public class Manager {
     public void updateTask(Task task) {
         if (tasks.get(task.getID()) != null)
             tasks.put(task.getID(), task);
-        else
-            createTask(task);
     }
 
     public void updateEpics(Epic epic) {
-        if (epics.get(epic.getID()) != null)
+        if (epics.get(epic.getID()) != null) {
             epics.put(epic.getID(), epic);
-        else
-            createEpic(epic);
+            updateStatuses(epic);
+        }
     }
 
     public void updateSubtasks(Subtask subtask) {
-        if (subtasks.get(subtask.getID()) != null)
+        if (subtasks.get(subtask.getID()) != null) {
             subtasks.put(subtask.getID(), subtask);
-        else
-            createSubtask(subtask);
+            var epic = epics.get(subtask.getEpicID());
+            updateStatuses(epic);
+        }
     }
 
     private void updateStatuses(Epic epic) {
