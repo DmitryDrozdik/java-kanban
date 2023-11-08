@@ -1,4 +1,4 @@
-import managers.Manager;
+import managers.Managers;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -6,7 +6,7 @@ import tasks.enums.Status;
 
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        var manager = Managers.getDefaultManager();
 
         // Create Tasks
         Task task1 = new Task("Task1", "This is task 1");
@@ -40,6 +40,15 @@ public class Main {
         task1.setName("UpdatedTask1");
         task1.setStatus(Status.IN_PROGRESS);
         manager.updateTask(task1);
+
+        System.out.println("Check history:");
+        manager.getTaskByID(task1.getID());
+        System.out.println(manager.getHistory());
+        manager.getEpicByID(epic.getID());
+        System.out.println(manager.getHistory());
+        manager.getSubtaskByID(subtask3.getID());
+        System.out.println(manager.getHistory());
+
 
         // Delete task by ID
         manager.deleteTaskByID(task2.getID());
