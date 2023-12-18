@@ -49,12 +49,16 @@ public class Main {
         manager.getSubtaskByID(subtask3.getID());
         System.out.println(manager.getHistory());
 
+        // Output history after each request
+        System.out.println("History after each request: " + manager.getHistory());
 
-        // Delete task by ID
+        // Deleting a task present in the history
         manager.deleteTaskByID(task2.getID());
+        System.out.println("History after deleting task2: " + manager.getHistory());
 
-        // Delete epic by ID (Should also delete subtasks)
+        // Deleting an epic with subtasks
         manager.deleteEpicByID(epic.getID());
+        System.out.println("History after deleting epic with subtasks: " + manager.getHistory());
 
         // Verify final conditions
         System.out.println("Final Tasks: " + manager.getAllTasks());
