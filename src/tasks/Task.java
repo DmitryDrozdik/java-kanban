@@ -1,22 +1,33 @@
 package tasks;
 
 import tasks.enums.Status;
+import tasks.enums.TaskType;
 
 public class Task {
     private String name;
     private String description;
     private int ID;
     private Status status;
+    protected TaskType taskType;
 
     public Task(String name, String description, int ID, Status status) {
         this.name = name;
         this.description = description;
         this.ID = ID;
         this.status = status;
+        this.taskType = TaskType.TASK;
     }
 
     public Task(String name, String description) {
         this(name, description, 0, Status.NEW);
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public Boolean isTaskType(TaskType taskType) {
+        return this.taskType == taskType;
     }
 
     public Task(String name) {
