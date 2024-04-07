@@ -42,6 +42,10 @@ public interface TaskManager {
 
     List<Task> getAllSubtasks();
 
+    List<Task> getPrioritizedTasks();
+
+    boolean hasIntersections(Task task);
+
     List<Subtask> getEpicTasks(int ID);
 
     void updateTask(Task task);

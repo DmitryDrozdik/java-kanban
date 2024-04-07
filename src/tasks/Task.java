@@ -3,12 +3,79 @@ package tasks;
 import tasks.enums.Status;
 import tasks.enums.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 public class Task {
     private String name;
     private String description;
     private int ID;
     private Status status;
     protected TaskType taskType;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null || duration == null)
+        {
+            return null;
+        }
+
+        return startTime.plus(duration);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return ID == task.ID &&
+                Objects.equals(name, task.name) &&
+                Objects.equals(description, task.description) &&
+                status == task.status &&
+                taskType == task.taskType &&
+                Objects.equals(duration, task.duration) &&
+                Objects.equals(startTime, task.startTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, ID, status, taskType, duration, startTime);
+    }
+
+    public Task(String name, String description, int ID, Status status, Duration duration, LocalDateTime localDateTime) {
+        this(name, description, ID, status, duration);
+        this.startTime = localDateTime;
+    }
+
+    public Task(String name, String description, int ID, Status status, Duration duration) {
+        this(name, description, ID, status);
+        this.duration = duration;
+        this.startTime = null;
+    }
+
+    public Task(String name, String description, int ID, Status status, LocalDateTime startTime) {
+        this(name, description, ID, status);
+        this.duration = null;
+        this.startTime = startTime;
+    }
 
     public Task(String name, String description, int ID, Status status) {
         this.name = name;
@@ -32,6 +99,16 @@ public class Task {
 
     public Task(String name) {
         this(name, "default description", 0, Status.NEW);
+    }
+
+    public boolean intersects(Task other) {
+        if (this.getStartTime() == null || this.getEndTime() == null ||
+                other.getStartTime() == null || other.getEndTime() == null)
+        {
+            return false;
+        }
+
+        return this.getStartTime().isBefore(other.getEndTime()) && this.getEndTime().isAfter(other.getStartTime());
     }
 
     public String getName() {
