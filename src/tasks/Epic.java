@@ -18,6 +18,16 @@ public class Epic extends Task {
         this.taskType = TaskType.EPIC;
     }
 
+    public void setEndTime(LocalDateTime dt)
+    {
+        this.endTime = dt;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return this.endTime;
+    }
+
     public Epic(String name, String description) {
         this(name, description, 0, Status.NEW);
     }
@@ -59,8 +69,8 @@ public class Epic extends Task {
         this.subtaskListID.add(subtaskID);
     }
 
-    public void deleteSubtask(int subtaskID) {
-        this.subtaskListID.remove((Object)subtaskID);
+    public void deleteSubtask(Integer subtaskID) {
+        this.subtaskListID.remove(subtaskID);
     }
 
     @Override

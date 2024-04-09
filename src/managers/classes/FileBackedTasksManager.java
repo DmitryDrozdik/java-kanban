@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
-    private static final String HEADER = "id,type,name,status,description,epic" + System.lineSeparator();
+    private static final String HEADER = "id,type,name,status,description,epic,duration,startTime" + System.lineSeparator();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static void main(String[] args) {
@@ -303,9 +303,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void updateTask(Task task) {
-        if (hasIntersections(task)) {
-            throw new IllegalArgumentException("Задача пересекается с существующими задачами");
-        }
         super.updateTask(task);
         save();
     }

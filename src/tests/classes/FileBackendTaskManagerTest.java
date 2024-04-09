@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
-    @Override
     @BeforeEach
     protected void setUp() {
         taskManager = new FileBackedTasksManager();
