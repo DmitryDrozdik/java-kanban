@@ -2,7 +2,6 @@ package managers.classes;
 
 import exceptions.ManagerLoadException;
 import managers.interfaces.HistoryManager;
-import managers.interfaces.TaskManager;
 
 import exceptions.ManagerSaveException;
 
@@ -187,9 +186,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void createTask(Task task) {
-        if (hasIntersections(task)) {
-            throw new IllegalArgumentException("Задача пересекается с существующими задачами");
-        }
         super.createTask(task);
         save();
     }
@@ -202,9 +198,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void createSubtask(Subtask subtask) {
-        if (hasIntersections(subtask)) {
-            throw new IllegalArgumentException("Подзадача пересекается с существующими задачами");
-        }
         super.createSubtask(subtask);
         save();
     }
@@ -315,9 +308,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void updateSubtasks(Subtask subtask) {
-        if (hasIntersections(subtask)) {
-            throw new IllegalArgumentException("Подзадача пересекается с существующими задачами");
-        }
         super.updateSubtasks(subtask);
         save();
     }
