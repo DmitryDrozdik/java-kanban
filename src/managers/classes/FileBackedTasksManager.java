@@ -2,7 +2,6 @@ package managers.classes;
 
 import exceptions.ManagerLoadException;
 import managers.interfaces.HistoryManager;
-import managers.interfaces.TaskManager;
 
 import exceptions.ManagerSaveException;
 
@@ -13,12 +12,16 @@ import tasks.enums.Status;
 import tasks.enums.TaskType;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private static final String filePath = "./resources/buffer.csv";
-    private static final String HEADER = "id,type,name,status,description,epic" + System.lineSeparator();
+    private final File file;
+    private static final String HEADER = "id,type,name,status,description,epic,duration,startTime" + System.lineSeparator();
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static void main(String[] args) {
         FileBackedTasksManager manager = new FileBackedTasksManager();
@@ -36,7 +39,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         manager.getEpicByID(epic1.getID());
         manager.getSubtaskByID(sub2.getID());
 
-        FileBackedTasksManager loadedManager = FileBackedTasksManager.load(new File(filePath));
+        FileBackedTasksManager loadedManager = FileBackedTasksManager.load(new File("./resources/buffer.csv"));
 
         System.out.println("Восстановленные задачи: " + loadedManager.getAllTasks());
         System.out.println("Восстановленные эпики: " + loadedManager.getAllEpics());
@@ -44,8 +47,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println("Восстановленная история: " + loadedManager.getHistory());
     }
 
-    protected void save() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+    public FileBackedTasksManager(File file) {
+        this.file = file;
+    }
+
+    public FileBackedTasksManager() {
+        this(new File("./buffer.csv"));
+    }
+
+    public void save() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(HEADER);
 
             for (Task task : super.getAllTasks()) {
@@ -76,13 +87,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String name = parts[2];
         Status status = Status.valueOf(parts[3]);
         String description = parts[4];
+        Duration duration = parts[6].equals("null") ? null : Duration.ofMinutes(Long.parseLong(parts[6]));
+        LocalDateTime startTime = parts[7].equals("null") ? null : LocalDateTime.parse(parts[7], formatter);
 
         switch (type) {
             case TASK:
-                return new Task(name, description, ID, status);
+                return new Task(name, description, ID, status, duration, startTime);
             case SUBTASK:
                 int epicID = Integer.parseInt(parts[5]);
-                return new Subtask(name, description, ID, status, epicID);
+                return new Subtask(name, description, ID, status, epicID, duration, startTime);
             case EPIC:
                 return new Epic(name, description, ID, status);
         }
@@ -99,17 +112,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private String taskToString(Task task) {
         String epicID = task.isTaskType(TaskType.SUBTASK) ? String.valueOf(((Subtask) task).getEpicID()) : "";
+        String duration = task.getDuration() != null ? String.valueOf(task.getDuration().toMinutes()) : "null";
+        String startTime = task.getStartTime() != null ? task.getStartTime().format(formatter) : "null";
         return String.join(",",
                 String.valueOf(task.getID()),
                 task.getTaskType().toString(),
                 task.getName(),
                 task.getStatus().toString(),
                 task.getDescription(),
-                epicID);
+                epicID,
+                duration,
+                startTime);
     }
 
     public static FileBackedTasksManager load(File file) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             reader.readLine();
@@ -223,7 +240,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public Task getTaskByID(int ID) {
-        var res = super.getEpicByID(ID);
+        var res = super.getTaskByID(ID);
         save();
 
         return res;
