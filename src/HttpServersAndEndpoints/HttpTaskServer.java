@@ -21,17 +21,32 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import managers.Managers;
 import managers.interfaces.TaskManager;
+import tasks.Task;
+import tasks.enums.Status;
+
+import static tasks.enums.Status.NEW;
+import static tasks.enums.TaskType.TASK;
 
 public class HttpTaskServer {
     public static void main(String[] args) throws IOException {
 
         TaskManager taskManager = Managers.getDefaultManager();
+        taskManager.createTask(new Task("первая задача"));
+      //  taskManager.createTask(new Task("вторая задача"));
+       // taskManager.createTask(new Task("третья задача"));
 
+        try {
+            HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+            httpServer.createContext("/tasks", new TaskHandler(taskManager)); // связываем путь и обработчик
+//            httpServer.createContext("/subtasks", new SubtaskHandler(taskManager));
+//            httpServer.createContext("/epics", new EpicHandler(taskManager));
+//            httpServer.createContext("/history", new HistoryHandler(taskManager));
+//            httpServer.createContext("/prioritized", new PrioritizedHandler(taskManager));
+            httpServer.start();
+            System.out.println("Start 8080");
 
-        HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
-        httpServer.createContext("/tasks", new TaskHandler(taskManager)); // связываем путь и обработчик
-        httpServer.start();
-
-        Gson gson = new Gson();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
