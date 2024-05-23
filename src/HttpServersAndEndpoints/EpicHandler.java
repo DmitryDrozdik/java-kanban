@@ -111,8 +111,19 @@ public class EpicHandler extends BaseHttpHandler  implements HttpHandler {
         }
 
 
-    private void delEpicById(HttpExchange exchange, String id) {
-// body
+    private void delEpicById(HttpExchange exchange, String id) throws IOException {
+
+        //void deleteEpicByID(int ID);
+
+        String[] path = getPath(exchange);
+        int ide = Integer.parseInt(id);
+
+        Epic epic;
+
+        taskManager.deleteEpicByID(ide);
+        exchange.sendResponseHeaders(200, 0);
+        sendResponse(exchange, String.format("Эпик удален"));
+
     }
 
     void sendResponse(HttpExchange exchange, String text) throws IOException {

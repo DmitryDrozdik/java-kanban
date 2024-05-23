@@ -101,14 +101,32 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
         //exchange.sendResponseHeaders(203, 0);
 
         //void deleteTaskByID(int ID);
+
         String[] path = getPath(exchange);
         int ide = Integer.parseInt(id);
 
-        Task deletedTask = taskManager.getTaskByID(ide);
-
-        String deletedTaskJson = gson.toJson(deletedTask);
+        Task task;
+//        try {
+//            task = gson.fromJson(request, Task.class);
+//        } catch (JsonSyntaxException e) {
+//            exchange.sendResponseHeaders(400, 0);
+//            sendResponse(exchange, "Неверный формат входных данных");
+//            return;
+//        }
+        taskManager.deleteTaskByID(ide);
         exchange.sendResponseHeaders(200, 0);
-        sendResponse(exchange, deletedTaskJson);
+        sendResponse(exchange, String.format("Задача удалена"));
+
+
+
+//        Task deletedTask = taskManager.deleteTaskByID(ide);
+//
+//        String deletedTaskJson = gson.toJson(deletedTask);
+//        exchange.sendResponseHeaders(200, 0);
+//        sendResponse(exchange, deletedTaskJson);
+
+
+
 
     }
 
