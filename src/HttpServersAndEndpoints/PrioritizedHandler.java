@@ -3,8 +3,11 @@ package HttpServersAndEndpoints;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import managers.interfaces.TaskManager;
+import tasks.Task;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 
 public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
 
@@ -21,8 +24,23 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 
-    private void getPrioritized(HttpExchange httpExchange) {
+    private void getPrioritized(HttpExchange exchange) throws IOException{
 
+          // List<Task> getPrioritizedTasks();
+
+        List<Task> prioritized = taskManager.getPrioritizedTasks();
+//        список задач в формате Json
+        String prioritizedJson = gson.toJson(prioritized);
+        exchange.sendResponseHeaders(200, 0);
+        sendResponse(exchange, prioritizedJson);
+
+    }
+
+
+    void sendResponse(HttpExchange exchange, String text) throws IOException {
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(text.getBytes());
+        }
     }
 
 }

@@ -32,6 +32,10 @@ public class HttpTaskServer {
 
         TaskManager taskManager = Managers.getDefaultManager();
         taskManager.createTask(new Task("первая задача"));
+
+        Task task = taskManager.getTaskByID(1);
+        task.setStatus(Status.IN_PROGRESS);
+        taskManager.updateTask(task);
       //  taskManager.createTask(new Task("вторая задача"));
        // taskManager.createTask(new Task("третья задача"));
 

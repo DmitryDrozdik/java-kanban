@@ -98,7 +98,18 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
         }
 
     private void delTaskById(HttpExchange exchange, String id) throws IOException {
-        exchange.sendResponseHeaders(203, 0);
+        //exchange.sendResponseHeaders(203, 0);
+
+        //void deleteTaskByID(int ID);
+        String[] path = getPath(exchange);
+        int ide = Integer.parseInt(id);
+
+        Task deletedTask = taskManager.getTaskByID(ide);
+
+        String deletedTaskJson = gson.toJson(deletedTask);
+        exchange.sendResponseHeaders(200, 0);
+        sendResponse(exchange, deletedTaskJson);
+
     }
 
     void sendResponse(HttpExchange exchange, String text) throws IOException {
