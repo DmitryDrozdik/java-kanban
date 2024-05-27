@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-public class HistoryHandler extends BaseHttpHandler  implements HttpHandler {
+public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
 
     protected HistoryHandler(TaskManager taskManager) {
         super(taskManager);
@@ -19,19 +19,18 @@ public class HistoryHandler extends BaseHttpHandler  implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             getHistory(httpExchange);
         }
     }
 
     private void getHistory(HttpExchange exchange) throws IOException {
 
-//        List<Task> getHistory();
-            List<Task> history = taskManager.getHistory();
+        List<Task> history = taskManager.getHistory();
 //        список задач в формате Json
-            String historyJson = gson.toJson(history);
-            exchange.sendResponseHeaders(200, 0);
-            sendResponse(exchange, historyJson);
+        String historyJson = gson.toJson(history);
+        exchange.sendResponseHeaders(200, 0);
+        sendResponse(exchange, historyJson);
 
     }
 

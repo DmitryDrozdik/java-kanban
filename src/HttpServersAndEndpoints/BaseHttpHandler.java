@@ -20,7 +20,6 @@ public abstract class BaseHttpHandler {
         return str;
     }
 
-
     protected BaseHttpHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
 

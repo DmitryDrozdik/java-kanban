@@ -6,13 +6,12 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class DurationAdapter extends TypeAdapter<Duration> {
 
     @Override
     public void write(JsonWriter jsonWriter, Duration duration) throws IOException {
-        if(duration == null) {
+        if (duration == null) {
             jsonWriter.value("");
         } else {
             jsonWriter.value(duration.toMinutes());
@@ -22,7 +21,7 @@ public class DurationAdapter extends TypeAdapter<Duration> {
     @Override
     public Duration read(JsonReader jsonReader) throws IOException {
         String dur = jsonReader.nextString();
-        if(dur.isBlank()) {
+        if (dur.isBlank()) {
             return null;
         } else {
             return Duration.ofMinutes(Long.parseLong(dur));

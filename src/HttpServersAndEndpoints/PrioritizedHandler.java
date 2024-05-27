@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
 
-      protected PrioritizedHandler(TaskManager taskManager) {
+    protected PrioritizedHandler(TaskManager taskManager) {
         super(taskManager);
     }
 
@@ -19,14 +19,12 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             getPrioritized(httpExchange);
         }
     }
 
-    private void getPrioritized(HttpExchange exchange) throws IOException{
-
-          // List<Task> getPrioritizedTasks();
+    private void getPrioritized(HttpExchange exchange) throws IOException {
 
         List<Task> prioritized = taskManager.getPrioritizedTasks();
 //        список задач в формате Json
@@ -35,7 +33,6 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
         sendResponse(exchange, prioritizedJson);
 
     }
-
 
     void sendResponse(HttpExchange exchange, String text) throws IOException {
         try (OutputStream os = exchange.getResponseBody()) {

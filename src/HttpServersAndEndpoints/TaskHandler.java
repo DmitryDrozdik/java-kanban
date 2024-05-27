@@ -1,6 +1,5 @@
 package HttpServersAndEndpoints;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -12,7 +11,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
+public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     protected TaskHandler(TaskManager taskManager) {
         super(taskManager);
     }
@@ -23,32 +22,23 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
         String[] path = getPath(httpExchange);
         switch (method) {
             case "GET":
-                if(path.length < 3) {
+                if (path.length < 3) {
                     getTaskList(httpExchange);
                 } else {
                     getTaskById(httpExchange, path[2]);
-            }
+                }
                 break;
             case "POST":
-                    putTask(httpExchange);
+                putTask(httpExchange);
                 break;
             case "DELETE":
                 delTaskById(httpExchange, path[2]);
                 break;
         }
 
-
-
-//        httpExchange.sendResponseHeaders(200, 0);
-//
-//        String response = "Ура!";
-//
-//        try (OutputStream os = httpExchange.getResponseBody()) {
-//            os.write(response.getBytes());
-//        }
     }
+
     private void getTaskList(HttpExchange exchange) throws IOException {
-//        List<Task> getAllTasks();
 
         List<Task> listTask = taskManager.getAllTasks();
 //        список задач в формате Json
@@ -61,9 +51,6 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
 
     private void getTaskById(HttpExchange exchange, String id) throws IOException {
 
-        // Task getTaskByID(int ID);
-
-        String[] path = getPath(exchange);
         int ide = Integer.parseInt(id);
 
         Task taskId = taskManager.getTaskByID(ide);
@@ -72,14 +59,14 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
         exchange.sendResponseHeaders(200, 0);
         sendResponse(exchange, taskIdJson);
 
-        }
+    }
 
     private void putTask(HttpExchange exchange) throws IOException {
 
         String request = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         if (request.isBlank()) {
             exchange.sendResponseHeaders(400, 0);
-            sendResponse(exchange, "Пустые входные данные");
+            sendResponse(exchange, "Пустые входные данные.");
             return;
         }
 
@@ -89,44 +76,39 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
             task = gson.fromJson(request, Task.class);
         } catch (JsonSyntaxException e) {
             exchange.sendResponseHeaders(400, 0);
-            sendResponse(exchange, "Неверный формат входных данных");
+            sendResponse(exchange, "Неверный формат входных данных.");
             return;
         }
-        taskManager.createTask(task);
-        exchange.sendResponseHeaders(201, 0);
-        sendResponse(exchange, String.format("Задача создана"));
+
+        if (taskManager.hasIntersections(task)) {
+            exchange.sendResponseHeaders(406, 0);
+            sendResponse(exchange, "Задача пересекается с существующими.");
+        } else if (task.getID() != 0) {
+            taskManager.updateTask(task);
+            exchange.sendResponseHeaders(201, 0);
+            sendResponse(exchange, "Задача обновлена.");
+        } else {
+            taskManager.createTask(task);
+            exchange.sendResponseHeaders(201, 0);
+            sendResponse(exchange, String.format("Задача создана."));
         }
+    }
 
     private void delTaskById(HttpExchange exchange, String id) throws IOException {
-        //exchange.sendResponseHeaders(203, 0);
 
-        //void deleteTaskByID(int ID);
+        int ide;
 
-        String[] path = getPath(exchange);
-        int ide = Integer.parseInt(id);
+        try {
+            ide = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            exchange.sendResponseHeaders(400, 0);
+            sendResponse(exchange, "Неверный формат. Id должен быть числом.");
+            return;
+        }
 
-        Task task;
-//        try {
-//            task = gson.fromJson(request, Task.class);
-//        } catch (JsonSyntaxException e) {
-//            exchange.sendResponseHeaders(400, 0);
-//            sendResponse(exchange, "Неверный формат входных данных");
-//            return;
-//        }
         taskManager.deleteTaskByID(ide);
         exchange.sendResponseHeaders(200, 0);
         sendResponse(exchange, String.format("Задача удалена"));
-
-
-
-//        Task deletedTask = taskManager.deleteTaskByID(ide);
-//
-//        String deletedTaskJson = gson.toJson(deletedTask);
-//        exchange.sendResponseHeaders(200, 0);
-//        sendResponse(exchange, deletedTaskJson);
-
-
-
 
     }
 
@@ -135,12 +117,5 @@ public class TaskHandler extends BaseHttpHandler  implements HttpHandler {
             os.write(text.getBytes());
         }
     }
-
-    //        System.out.println("tasks");
-//        exchange.sendResponseHeaders(200, 0);
-//        String response = "Ура!";
-//
-//        try (OutputStream os = exchange.getResponseBody()) {
-//            os.write(response.getBytes());
 
 }
