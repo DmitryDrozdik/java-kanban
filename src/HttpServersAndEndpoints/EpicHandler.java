@@ -12,6 +12,10 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static tasks.enums.Methods.GET;
+import static tasks.enums.Methods.DELETE;
+import static tasks.enums.Methods.POST;
+
 public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     protected EpicHandler(TaskManager taskManager) {
         super(taskManager);
@@ -22,22 +26,19 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String[] path = getPath(httpExchange);
-        switch (method) {
-            case "GET":
-                if (path.length < 3) {
-                    getEpicList(httpExchange);
-                } else if (path.length < 3) {
-                    getEpicById(httpExchange, path[2]);
-                } else {
-                    getEpicSubtasksById(httpExchange, path[3]);
-                }
-                break;
-            case "POST":
-                putEpic(httpExchange);
-                break;
-            case "DELETE":
-                delEpicById(httpExchange, path[2]);
-                break;
+
+        if (method.equals(GET)) {
+            if (path.length < 3) {
+                getEpicList(httpExchange);
+            } else if (path.length < 3) {
+                getEpicById(httpExchange, path[2]);
+            } else {
+                getEpicSubtasksById(httpExchange, path[3]);
+            }
+        } else if (method.equals(POST)) {
+            putEpic(httpExchange);
+        } else if (method.equals(DELETE)) {
+            putEpic(httpExchange);
         }
 
     }

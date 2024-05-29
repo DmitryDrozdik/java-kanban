@@ -25,8 +25,7 @@ public abstract class BaseHttpHandler {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .excludeFieldsWithoutExposeAnnotation();
+                .registerTypeAdapter(Duration.class, new DurationAdapter());
         gson = gsonBuilder.create();
     }
 

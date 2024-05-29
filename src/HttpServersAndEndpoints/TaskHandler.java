@@ -3,9 +3,11 @@ package HttpServersAndEndpoints;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import exceptions.ManagerSaveException;
 import managers.interfaces.TaskManager;
 import tasks.Task;
 
+import javax.management.InstanceNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -50,15 +52,26 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void getTaskById(HttpExchange exchange, String id) throws IOException {
+        int ide = -1;
+        try {
+            ide = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            exchange.sendResponseHeaders(400, 0);
+            sendResponse(exchange, "Неверный формат. Id должен быть числом.");
+            return;
+        }
 
-        int ide = Integer.parseInt(id);
+        Task task;
+        task = taskManager.getTaskByID(ide);
+        if (task == null) {
+            exchange.sendResponseHeaders(404, 0);
+            sendResponse(exchange, "Задача не найдена.");
+            return;
+        }
 
-        Task taskId = taskManager.getTaskByID(ide);
-
-        String taskIdJson = gson.toJson(taskId);
+        String taskJson = gson.toJson(task);
         exchange.sendResponseHeaders(200, 0);
-        sendResponse(exchange, taskIdJson);
-
+        sendResponse(exchange, taskJson);
     }
 
     private void putTask(HttpExchange exchange) throws IOException {
@@ -83,14 +96,21 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         if (taskManager.hasIntersections(task)) {
             exchange.sendResponseHeaders(406, 0);
             sendResponse(exchange, "Задача пересекается с существующими.");
-        } else if (task.getID() != 0) {
-            taskManager.updateTask(task);
-            exchange.sendResponseHeaders(201, 0);
-            sendResponse(exchange, "Задача обновлена.");
         } else {
-            taskManager.createTask(task);
-            exchange.sendResponseHeaders(201, 0);
-            sendResponse(exchange, String.format("Задача создана."));
+            try {
+                if (task.getID() != 0) {
+                    taskManager.updateTask(task);
+                    exchange.sendResponseHeaders(201, 0);
+                    sendResponse(exchange, "Задача обновлена.");
+                } else {
+                    taskManager.createTask(task);
+                    exchange.sendResponseHeaders(201, 0);
+                    sendResponse(exchange, String.format("Задача создана."));
+                }
+            } catch (ManagerSaveException e) {
+                exchange.sendResponseHeaders(500, 0);
+                sendResponse(exchange, e.getMessage());
+            }
         }
     }
 

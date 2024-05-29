@@ -9,20 +9,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
-    @Expose
     private String name;
-    @Expose
     private String description;
-    @Expose
     private int ID;
-    @Expose
     private Status status;
-    @Expose
     protected TaskType taskType;
 
-    @Expose
     protected Duration duration;
-    @Expose
     protected LocalDateTime startTime;
 
     public Duration getDuration() {
