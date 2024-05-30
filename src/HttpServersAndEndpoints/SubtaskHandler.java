@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static tasks.enums.Methods.*;
+
 
 public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     protected SubtaskHandler(TaskManager taskManager) {
@@ -22,22 +24,18 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String[] path = getPath(httpExchange);
-        switch (method) {
-            case "GET":
-                if (path.length < 3) {
-                    getSubtaskList(httpExchange);
-                } else {
-                    getSubtaskById(httpExchange, path[2]);
-                }
-                break;
-            case "POST":
-                putSubtask(httpExchange);
-                break;
-            case "DELETE":
-                delSubtaskById(httpExchange, path[2]);
-                break;
-        }
 
+        if (method.equals(GET)) {
+            if (path.length < 3) {
+                getSubtaskList(httpExchange);
+            } else {
+                getSubtaskById(httpExchange, path[2]);
+            }
+        } else if (method.equals(POST)) {
+            putSubtask(httpExchange);
+        } else if (method.equals(DELETE)) {
+            delSubtaskById(httpExchange, path[2]);
+        }
     }
 
     private void getSubtaskList(HttpExchange exchange) throws IOException {
@@ -53,14 +51,33 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
 
     private void getSubtaskById(HttpExchange exchange, String id) throws IOException {
 
-        int ide = Integer.parseInt(id);
+//        int ide = Integer.parseInt(id);
+//
+//        Task subtaskId = taskManager.getSubtaskByID(ide);
+//
+//        String subtaskIdJson = gson.toJson(subtaskId);
+//        exchange.sendResponseHeaders(200, 0);
+//        sendResponse(exchange, subtaskIdJson);
+        int ide = -1;
+        try {
+            ide = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            exchange.sendResponseHeaders(400, 0);
+            sendResponse(exchange, "Неверный формат. Id должен быть числом.");
+            return;
+        }
 
         Task subtaskId = taskManager.getSubtaskByID(ide);
+        subtaskId = taskManager.getSubtaskByID(ide);
+        if (subtaskId == null) {
+            exchange.sendResponseHeaders(404, 0);
+            sendResponse(exchange, "Подзадача не найдена.");
+            return;
+        }
 
         String subtaskIdJson = gson.toJson(subtaskId);
         exchange.sendResponseHeaders(200, 0);
         sendResponse(exchange, subtaskIdJson);
-
     }
 
     private void putSubtask(HttpExchange exchange) throws IOException {

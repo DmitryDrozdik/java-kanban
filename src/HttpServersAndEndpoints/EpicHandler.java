@@ -56,14 +56,33 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
 
     private void getEpicSubtasksById(HttpExchange exchange, String id) throws IOException {
+        //       int ide = Integer.parseInt(id);
 
-        int ide = Integer.parseInt(id);
+//        Task epicId = taskManager.getEpicByID(ide);
+//
+//        String epicIdJson = gson.toJson(epicId);
+//        exchange.sendResponseHeaders(200, 0);
+//        sendResponse(exchange, epicIdJson);
 
-        Task subtaskId = taskManager.getSubtaskByID(ide);
+        int ide = -1;
+        try {
+            ide = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            exchange.sendResponseHeaders(400, 0);
+            sendResponse(exchange, "Неверный формат. Id должен быть числом.");
+            return;
+        }
 
-        String subtaskIdJson = gson.toJson(subtaskId);
+        Task epicId = taskManager.getEpicByID(ide);
+            if (epicId == null) {
+            exchange.sendResponseHeaders(404, 0);
+            sendResponse(exchange, "Эпик не найден.");
+            return;
+        }
+
+        String epicIdJson = gson.toJson(epicId);
         exchange.sendResponseHeaders(200, 0);
-        sendResponse(exchange, subtaskIdJson);
+        sendResponse(exchange, epicIdJson);
 
     }
 
