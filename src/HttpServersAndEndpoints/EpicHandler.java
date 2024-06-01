@@ -6,15 +6,14 @@ import com.sun.net.httpserver.HttpHandler;
 import managers.interfaces.TaskManager;
 import tasks.Epic;
 import tasks.Task;
+import tasks.enums.Methods;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static tasks.enums.Methods.GET;
-import static tasks.enums.Methods.DELETE;
-import static tasks.enums.Methods.POST;
+import static tasks.enums.Methods.*;
 
 public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     protected EpicHandler(TaskManager taskManager) {
@@ -27,18 +26,18 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         String[] path = getPath(httpExchange);
 
-        if (method.equals(GET)) {
+        if (Methods.valueOf(method) == GET) {
             if (path.length < 3) {
                 getEpicList(httpExchange);
-            } else if (path.length < 3) {
+            } else if (path.length == 3) {
                 getEpicById(httpExchange, path[2]);
             } else {
                 getEpicSubtasksById(httpExchange, path[3]);
             }
-        } else if (method.equals(POST)) {
+        } else if (Methods.valueOf(method) == POST) {
             putEpic(httpExchange);
-        } else if (method.equals(DELETE)) {
-            putEpic(httpExchange);
+        } else if (Methods.valueOf(method) == DELETE) {
+            delEpicById(httpExchange, path[2]);
         }
 
     }
@@ -56,13 +55,6 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
 
     private void getEpicSubtasksById(HttpExchange exchange, String id) throws IOException {
-        //       int ide = Integer.parseInt(id);
-
-//        Task epicId = taskManager.getEpicByID(ide);
-//
-//        String epicIdJson = gson.toJson(epicId);
-//        exchange.sendResponseHeaders(200, 0);
-//        sendResponse(exchange, epicIdJson);
 
         int ide = -1;
         try {
@@ -74,7 +66,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         }
 
         Task epicId = taskManager.getEpicByID(ide);
-            if (epicId == null) {
+        if (epicId == null) {
             exchange.sendResponseHeaders(404, 0);
             sendResponse(exchange, "Эпик не найден.");
             return;
@@ -139,5 +131,3 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     }
 
 }
-
-

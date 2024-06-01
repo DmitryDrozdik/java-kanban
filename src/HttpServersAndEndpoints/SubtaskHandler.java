@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import managers.interfaces.TaskManager;
 import tasks.Subtask;
 import tasks.Task;
+import tasks.enums.Methods;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,15 +26,15 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         String[] path = getPath(httpExchange);
 
-        if (method.equals(GET)) {
+        if (Methods.valueOf(method) == GET) {
             if (path.length < 3) {
                 getSubtaskList(httpExchange);
             } else {
                 getSubtaskById(httpExchange, path[2]);
             }
-        } else if (method.equals(POST)) {
+        } else if (Methods.valueOf(method) == POST) {
             putSubtask(httpExchange);
-        } else if (method.equals(DELETE)) {
+        } else if (Methods.valueOf(method) == DELETE) {
             delSubtaskById(httpExchange, path[2]);
         }
     }
@@ -50,14 +51,6 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void getSubtaskById(HttpExchange exchange, String id) throws IOException {
-
-//        int ide = Integer.parseInt(id);
-//
-//        Task subtaskId = taskManager.getSubtaskByID(ide);
-//
-//        String subtaskIdJson = gson.toJson(subtaskId);
-//        exchange.sendResponseHeaders(200, 0);
-//        sendResponse(exchange, subtaskIdJson);
         int ide = -1;
         try {
             ide = Integer.parseInt(id);

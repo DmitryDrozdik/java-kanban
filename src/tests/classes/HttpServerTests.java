@@ -1,6 +1,8 @@
 package tests.classes;
 
+import HttpServersAndEndpoints.DurationAdapter;
 import HttpServersAndEndpoints.HttpTaskServer;
+import HttpServersAndEndpoints.LocalDateTimeAdapter;
 import com.google.gson.*;
 import com.sun.net.httpserver.HttpServer;
 import managers.Managers;
@@ -28,6 +30,8 @@ public class HttpServerTests {
     @BeforeAll
     public static void allInit() {
         gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .create();
     }
 
