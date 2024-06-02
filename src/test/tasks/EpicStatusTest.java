@@ -1,4 +1,4 @@
-package tests.tasks;
+package test.tasks;
 
 import managers.classes.InMemoryTaskManager;
 import managers.interfaces.TaskManager;
@@ -18,6 +18,7 @@ public class EpicStatusTest {
     void setUp() {
         taskManager = new InMemoryTaskManager();
     }
+
     @Test
     void testAllSubtasksNew() {
         Epic epic = new Epic("Epic 1", "Description 1");

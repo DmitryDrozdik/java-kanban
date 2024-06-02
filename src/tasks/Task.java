@@ -1,6 +1,5 @@
 package tasks;
 
-import com.google.gson.annotations.Expose;
 import tasks.enums.Status;
 import tasks.enums.TaskType;
 
@@ -11,7 +10,7 @@ import java.util.Objects;
 public class Task {
     private String name;
     private String description;
-    private int ID;
+    private int id;
     private Status status;
     protected TaskType taskType;
 
@@ -35,8 +34,7 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        if (startTime == null || duration == null)
-        {
+        if (startTime == null || duration == null) {
             return null;
         }
 
@@ -48,7 +46,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return ID == task.ID &&
+        return id == task.id &&
                 Objects.equals(name, task.name) &&
                 Objects.equals(description, task.description) &&
                 status == task.status &&
@@ -59,30 +57,30 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, ID, status, taskType, duration, startTime);
+        return Objects.hash(name, description, id, status, taskType, duration, startTime);
     }
 
-    public Task(String name, String description, int ID, Status status, Duration duration, LocalDateTime localDateTime) {
-        this(name, description, ID, status, duration);
+    public Task(String name, String description, int id, Status status, Duration duration, LocalDateTime localDateTime) {
+        this(name, description, id, status, duration);
         this.startTime = localDateTime;
     }
 
-    public Task(String name, String description, int ID, Status status, Duration duration) {
-        this(name, description, ID, status);
+    public Task(String name, String description, int id, Status status, Duration duration) {
+        this(name, description, id, status);
         this.duration = duration;
         this.startTime = null;
     }
 
-    public Task(String name, String description, int ID, Status status, LocalDateTime startTime) {
-        this(name, description, ID, status);
+    public Task(String name, String description, int id, Status status, LocalDateTime startTime) {
+        this(name, description, id, status);
         this.duration = null;
         this.startTime = startTime;
     }
 
-    public Task(String name, String description, int ID, Status status) {
+    public Task(String name, String description, int id, Status status) {
         this.name = name;
         this.description = description;
-        this.ID = ID;
+        this.id = id;
         this.status = status;
         this.taskType = TaskType.TASK;
     }
@@ -105,8 +103,7 @@ public class Task {
 
     public boolean intersects(Task other) {
         if (this.getStartTime() == null || this.getEndTime() == null ||
-                other.getStartTime() == null || other.getEndTime() == null)
-        {
+                other.getStartTime() == null || other.getEndTime() == null) {
             return false;
         }
 
@@ -117,31 +114,31 @@ public class Task {
         return name;
     }
 
-    public void setName (String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getDescription () {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription (String description){
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public int getID () {
-        return ID;
+    public int getID() {
+        return id;
     }
 
-    public void setID (int ID){
-        this.ID = ID;
+    public void setID(int id) {
+        this.id = id;
     }
 
-    public Status getStatus () {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus (Status status){
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -150,7 +147,7 @@ public class Task {
         return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", ID=" + ID +
+                ", id=" + id +
                 ", status=" + status +
                 '}';
     }

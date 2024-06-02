@@ -1,8 +1,8 @@
-package tests.classes;
+package test.classes;
 
-import HttpServersAndEndpoints.DurationAdapter;
-import HttpServersAndEndpoints.HttpTaskServer;
-import HttpServersAndEndpoints.LocalDateTimeAdapter;
+import httpserversandendpoints.DurationAdapter;
+import httpserversandendpoints.HttpTaskServer;
+import httpserversandendpoints.LocalDateTimeAdapter;
 import com.google.gson.*;
 import com.sun.net.httpserver.HttpServer;
 import managers.Managers;

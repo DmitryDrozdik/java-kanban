@@ -1,4 +1,4 @@
-package tests.classes;
+package test.classes;
 
 import managers.classes.FileBackedTasksManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksManager> {
+class FileBackendTaskManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
     @BeforeEach
     protected void setUp() {

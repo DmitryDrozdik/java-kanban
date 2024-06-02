@@ -1,4 +1,4 @@
-package HttpServersAndEndpoints;
+package httpserversandendpoints;
 
 import com.sun.net.httpserver.HttpServer;
 import managers.Managers;

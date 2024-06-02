@@ -1,10 +1,8 @@
 package managers.classes;
 
 import exceptions.ManagerLoadException;
-import managers.interfaces.HistoryManager;
-
 import exceptions.ManagerSaveException;
-
+import managers.interfaces.HistoryManager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -82,7 +80,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private static Task taskFromString(String value) {
         String[] parts = value.split(",");
-        int ID = Integer.parseInt(parts[0]);
+        int id = Integer.parseInt(parts[0]);
         TaskType type = TaskType.valueOf(parts[1]);
         String name = parts[2];
         Status status = Status.valueOf(parts[3]);
@@ -92,12 +90,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         switch (type) {
             case TASK:
-                return new Task(name, description, ID, status, duration, startTime);
+                return new Task(name, description, id, status, duration, startTime);
             case SUBTASK:
                 int epicID = Integer.parseInt(parts[5]);
-                return new Subtask(name, description, ID, status, epicID, duration, startTime);
+                return new Subtask(name, description, id, status, epicID, duration, startTime);
             case EPIC:
-                return new Epic(name, description, ID, status);
+                return new Epic(name, description, id, status);
         }
         return null;
     }
@@ -221,42 +219,42 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void deleteTaskByID(int ID) {
-        super.deleteTaskByID(ID);
+    public void deleteTaskByID(int id) {
+        super.deleteTaskByID(id);
         save();
     }
 
     @Override
-    public void deleteEpicByID(int ID) {
-        super.deleteEpicByID(ID);
+    public void deleteEpicByID(int id) {
+        super.deleteEpicByID(id);
         save();
     }
 
     @Override
-    public void deleteSubtaskByID(int ID) {
-        super.deleteSubtaskByID(ID);
+    public void deleteSubtaskByID(int id) {
+        super.deleteSubtaskByID(id);
         save();
     }
 
     @Override
-    public Task getTaskByID(int ID) {
-        var res = super.getTaskByID(ID);
-        save();
-
-        return res;
-    }
-
-    @Override
-    public Epic getEpicByID(int ID) {
-        var res = super.getEpicByID(ID);
+    public Task getTaskByID(int id) {
+        var res = super.getTaskByID(id);
         save();
 
         return res;
     }
 
     @Override
-    public Subtask getSubtaskByID(int ID) {
-        var res = super.getSubtaskByID(ID);
+    public Epic getEpicByID(int id) {
+        var res = super.getEpicByID(id);
+        save();
+
+        return res;
+    }
+
+    @Override
+    public Subtask getSubtaskByID(int id) {
+        var res = super.getSubtaskByID(id);
         save();
 
         return res;
@@ -287,8 +285,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public List<Subtask> getEpicTasks(int ID) {
-        var res = super.getEpicTasks(ID);
+    public List<Subtask> getEpicTasks(int id) {
+        var res = super.getEpicTasks(id);
         save();
 
         return res;

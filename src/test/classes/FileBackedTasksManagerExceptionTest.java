@@ -1,4 +1,4 @@
-package tests.classes;
+package test.classes;
 
 import exceptions.ManagerLoadException;
 import exceptions.ManagerSaveException;
