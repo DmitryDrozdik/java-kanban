@@ -3,12 +3,8 @@ package managers.interfaces;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-import tasks.enums.Status;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface TaskManager {
 
@@ -24,17 +20,17 @@ public interface TaskManager {
 
     void deleteAllSubtasks();
 
-    void deleteTaskByID(int ID);
+    void deleteTaskByID(int id);
 
-    void deleteEpicByID(int ID);
+    void deleteEpicByID(int id);
 
-    void deleteSubtaskByID(int ID);
+    void deleteSubtaskByID(int id);
 
-    Task getTaskByID(int ID);
+    Task getTaskByID(int id);
 
-    Epic getEpicByID(int ID);
+    Epic getEpicByID(int id);
 
-    Subtask getSubtaskByID(int ID);
+    Subtask getSubtaskByID(int id);
 
     List<Task> getAllTasks();
 
@@ -46,7 +42,7 @@ public interface TaskManager {
 
     boolean hasIntersections(Task task);
 
-    List<Subtask> getEpicTasks(int ID);
+    List<Subtask> getEpicTasks(int id);
 
     void updateTask(Task task);
 

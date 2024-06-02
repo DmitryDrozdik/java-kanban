@@ -1,4 +1,4 @@
-package HttpServersAndEndpoints;
+package httpserversandendpoints;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
