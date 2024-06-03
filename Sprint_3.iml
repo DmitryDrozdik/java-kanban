@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+  <component name="CheckStyle-IDEA-Module" serialisationVersion="2">
+    <option name="activeLocationsIds" />
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/src">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    <content url="file://$MODULE_DIR$/java-kanban">
+      <sourceFolder url="file://$MODULE_DIR$/java-kanban" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="11" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -24,5 +27,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="gson-2.9.0" level="project" />
+    <orderEntry type="library" name="google.code.gson" level="project" />
   </component>
 </module>
