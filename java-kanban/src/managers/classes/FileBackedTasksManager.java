@@ -50,7 +50,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public FileBackedTasksManager() {
-        this(new File("src/buffer.csv"));
+        this(new File("./buffer.csv"));
     }
 
     public void save() {
