@@ -1,3 +1,4 @@
+
 import managers.classes.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.Subtask;
@@ -22,11 +23,11 @@ public class Main {
                 Duration.ofMinutes(30), LocalDateTime.of(2022, 12, 30, 0, 30));
         manager.createSubtask(subtask2);
 //Данная задача должна быть 3 по счёту
-        Subtask subtask3 = new Subtask( "новая подзадача 3", "описание подзадачи 3", 3, Status.NEW, epic.getID(),
+        Subtask subtask3 = new Subtask("новая подзадача 3", "описание подзадачи 3", 3, Status.NEW, epic.getID(),
                 Duration.ofMinutes(45), LocalDateTime.of(2022, 12, 30, 0, 30).plusDays(1));
         manager.createSubtask(subtask3);
 //Данная задача должна быть 2 по счёту
-        Subtask subtask4 = new Subtask( "новая подзадача 4", "описание подзадачи 4", 4, Status.NEW, epic.getID(),
+        Subtask subtask4 = new Subtask("новая подзадача 4", "описание подзадачи 4", 4, Status.NEW, epic.getID(),
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 12, 30, 0, 30).plusHours(12));
         manager.createSubtask(subtask4);
 //Порядок добавления следующий subtask1 -> subtask2 -> subtask3 -> subtask4
@@ -45,14 +46,14 @@ public class Main {
 //Удаление подзадачи subtask2
         manager.deleteSubtaskByID(subtask2.getID());
 //Новый порядок subtask4 -> subtask1
-        System.out.println(epic.getDuration() + " == " + (subtask1.getDuration().plus(subtask4.getDuration())  + " " + (epic.getDuration().equals(subtask1.getDuration().plus(subtask4.getDuration())))));
+        System.out.println(epic.getDuration() + " == " + (subtask1.getDuration().plus(subtask4.getDuration()) + " " + (epic.getDuration().equals(subtask1.getDuration().plus(subtask4.getDuration())))));
         System.out.println(epic.getStartTime() + " == " + subtask4.getStartTime() + " " + epic.getStartTime().equals(subtask4.getStartTime()));
         System.out.println(epic.getEndTime() + " == " + subtask1.getEndTime() + " " + epic.getEndTime().equals(subtask1.getEndTime()));
         System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));
 //Удаление подзадачи subtask1
         manager.deleteSubtaskByID(subtask1.getID());
 //Новый порядок subtask4
-        System.out.println(epic.getDuration() + " == " + subtask4.getDuration()  + " " + (epic.getDuration() .equals (subtask4.getDuration())));
+        System.out.println(epic.getDuration() + " == " + subtask4.getDuration() + " " + (epic.getDuration().equals(subtask4.getDuration())));
         System.out.println(epic.getStartTime() + " == " + subtask4.getStartTime() + " " + epic.getStartTime().equals(subtask4.getStartTime()));
         System.out.println(epic.getEndTime() + " == " + subtask4.getEndTime() + " " + epic.getEndTime().equals(subtask4.getEndTime()));
         System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));

@@ -1,4 +1,4 @@
-package tests.classes;
+package classes;
 
 import exceptions.ManagerLoadException;
 import exceptions.ManagerSaveException;
@@ -40,7 +40,7 @@ public class FileBackedTasksManagerExceptionTest {
 
     @Test
     void testLoadAndSave() {
-        File file = new File(tempDir, "tasks.csv");
+        File file = new File(tempDir, "src.tasks.csv");
         FileBackedTasksManager taskManager = new FileBackedTasksManager(file);
         Task task = new Task("Task 1", "Description 1");
         taskManager.createTask(task);

@@ -1,4 +1,4 @@
-package tests.classes;
+package classes;
 
 import managers.classes.InMemoryHistoryManager;
 import managers.interfaces.HistoryManager;

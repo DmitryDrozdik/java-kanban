@@ -17,25 +17,25 @@ public class Subtask extends Task {
         this.epicID = epicID;
     }
 
-    public Subtask(String name, String description, int ID, Status status, Integer epicID, Duration duration, LocalDateTime localDateTime) {
-        this(name, description, ID, status, epicID, duration);
+    public Subtask(String name, String description, int id, Status status, Integer epicID, Duration duration, LocalDateTime localDateTime) {
+        this(name, description, id, status, epicID, duration);
         this.startTime = localDateTime;
     }
 
-    public Subtask(String name, String description, int ID, Status status, Integer epicID, Duration duration) {
-        this(name, description, ID, status, epicID);
+    public Subtask(String name, String description, int id, Status status, Integer epicID, Duration duration) {
+        this(name, description, id, status, epicID);
         this.duration = duration;
         this.startTime = null;
     }
 
-    public Subtask(String name, String description, int ID, Status status, Integer epicID, LocalDateTime startTime) {
-        this(name, description, ID, status, epicID);
+    public Subtask(String name, String description, int id, Status status, Integer epicID, LocalDateTime startTime) {
+        this(name, description, id, status, epicID);
         this.duration = null;
         this.startTime = startTime;
     }
 
-    public Subtask(String name, String description, int ID, Status status, Integer epicID) {
-        super(name, description, ID, status);
+    public Subtask(String name, String description, int id, Status status, Integer epicID) {
+        super(name, description, id, status);
         this.epicID = epicID;
         this.taskType = TaskType.SUBTASK;
         this.duration = null;
@@ -48,7 +48,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return"Subtask{" +
+        return "Subtask{" +
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", ID=" + getID() +

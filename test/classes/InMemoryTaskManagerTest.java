@@ -1,4 +1,4 @@
-package tests.classes;
+package classes;
 
 import managers.classes.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;
